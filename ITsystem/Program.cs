@@ -27,7 +27,7 @@ namespace ITsystem
                         PrintOrders(orderService);
                         break;
                     case "2":
-                        Console.WriteLine("(Skapa order - kommer i nästa steg)");
+                        CreateOrder(orderService);
                         break;
                     case "0":
                         return;
@@ -52,6 +52,44 @@ namespace ITsystem
             {
                 Console.WriteLine($"{o.Id,4} | {o.CreatedAt:yyyy-MM-dd HH:mm} | {o.CustomerName,-20} | {o.Product,-20} | {o.Quantity,4} st | {o.Status}");
             }
+        }
+
+
+        static string ReadRequired(string prompt)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+                string? input = Console.ReadLine()?.Trim();
+
+                if (!string.IsNullOrEmpty(input) && input.Length <= 100)
+                    return input;
+
+                Console.WriteLine("Får inte vara tomt (max 100 tecken).");
+            }
+        }
+
+        static int ReadInt(string prompt, int min, int max)
+        {
+            while (true)
+            {
+                Console.Write(prompt);
+
+                if (int.TryParse(Console.ReadLine(), out int value) && value >= min && value <= max)
+                    return value;
+
+                Console.WriteLine($"Ange ett heltal mellan {min} och {max}.");
+            }
+        }
+
+        static void CreateOrder(OrderService service)
+        {
+            string customer = ReadRequired("Kundnamn: ");
+            string product = ReadRequired("Produkt: ");
+            int quantity = ReadInt("Antal (1-1000): ", 1, 1000);
+
+            var order = service.CreateOrder(customer, product, quantity);
+            Console.WriteLine($"Order {order.Id} skapad.");
         }
     }
 }
