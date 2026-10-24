@@ -20,7 +20,10 @@ namespace IntegrationSystem
                         modbusClient.Connect();
                         Console.WriteLine("Ansluten till OT-systemet.");
                     }
-                    //Loopa läsa i databasen - för varje order
+
+                    modbusClient.ReadHoldingRegisters(0, 1);  // heartbeat: kastar fel direkt om OT inte svarar
+
+                    //Nya ordrar hämtas . Loopa läsa i databasen - för varje order
                     var newOrders = orderService.GetNewOrders();
 
                     foreach (var order in newOrders)
