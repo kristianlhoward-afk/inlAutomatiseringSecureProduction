@@ -31,6 +31,10 @@ namespace IntegrationSystem
                         // Register 0 = order-id, register 1 = antal
                         modbusClient.WriteMultipleRegisters(0, new[] { order.Id, order.Quantity });//skickar både id (register 0)
                                                                                                    //och antal (register 1) i ett anrop
+
+                        //modbusClient.WriteMultipleRegisters(0, new[] { order.Id, 5000 });  //Negativt test (fault injection)
+
+
                         orderService.MarkAsSent(order.Id);
                         Console.WriteLine($"Order {order.Id} skickad till OT ({order.Quantity} st).");
                     }

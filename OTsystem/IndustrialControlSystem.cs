@@ -105,6 +105,25 @@ namespace OTsystem
                         Console.WriteLine($"    Warning: Attempted to access HoldingRegister[{address}] which is out of bounds.");
                     }
                 }
+
+
+                // Validering av inkommande order innan produktion startas
+                int orderId = modbusServer.holdingRegisters[startAddress];
+                int quantity = modbusServer.holdingRegisters[startAddress + 1];
+
+                if (numberOfRegisters < 2 || orderId <= 0 || quantity < 1 || quantity > 1000)
+                {
+                    Console.WriteLine($"AVVISAD: ogiltig order (id={orderId}, antal={quantity}) - produktion startas inte.");
+                    return;
+                }
+
+                Console.WriteLine($"Startar produktion: order {orderId}, {quantity} st");
+                messageReceived = true;
+
+
+
+
+
             };
             // EasyModbus also has events for Inputs and DiscreteInputs if you need them:
             // modbusServer.InputRegistersChanged += (sender, args) => { /* ... */ };
