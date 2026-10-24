@@ -50,6 +50,8 @@ namespace OTsystem
             // EasyModbusSlave(int listenPort, string? ipAddress = null)
             ModbusServer modbusServer = new ModbusServer();
             modbusServer.Port = port; // Set the port number
+            modbusServer.LocalIPAddress = IPAddress.Loopback;  // lyssnar bara på 127.0.0.1, ej nåbar från nätverket
+           
 
             // --- Event Handlers for EasyModbus ---
 
